@@ -2,7 +2,7 @@
   "private": false,
   "displayName": "Yokis homebridge plugin",
   "name": "@hadjedjvincent/homebridge-yokis-usb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Expose Yokis accessories to HomeKit (via Yokey)",
   "license": "MIT",
   "repository": {
