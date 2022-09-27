@@ -1,0 +1,63 @@
+{
+  "pluginAlias": "YokisHomebridgePlugin",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "accessories": {
+      "type": "array",
+      "items": {
+        "title": "Accessories",
+        "type": "object",
+        "properties": {
+          "moduleId": {
+            "title": "Module ID",
+            "type": "string",
+            "placeholder": "ex: A0123BC4",
+            "required": true
+          },
+          "model": {
+            "title": "Model of the module",
+            "type": "string",
+            "required": true,
+            "default": "MTR2000ER",
+            "oneOf": [
+              {
+                "title": "MTR2000ER",
+                "enum": [
+                  "MTR2000ER"
+                ]
+              }
+            ]
+          },
+          "crc": {
+            "title": "CRC values depends on actions",
+            "type": "object",
+            "properties": {
+              "getModuleStatus": {
+                  "title": "getModuleStatus",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128,
+                  "required": true
+              },
+              "toggleOn": {
+                  "title": "toggleOn",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128,
+                  "required": true
+              },
+              "toggleOff": {
+                  "title": "toggleOff",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128,
+                  "required": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
