@@ -28,33 +28,6 @@
                 ]
               }
             ]
-          },
-          "crc": {
-            "title": "CRC values depends on actions",
-            "type": "object",
-            "properties": {
-              "getModuleStatus": {
-                  "title": "getModuleStatus",
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 128,
-                  "required": true
-              },
-              "toggleOn": {
-                  "title": "toggleOn",
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 128,
-                  "required": true
-              },
-              "toggleOff": {
-                  "title": "toggleOff",
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 128,
-                  "required": true
-              }
-            }
           }
         }
       }

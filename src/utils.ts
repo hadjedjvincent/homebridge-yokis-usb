@@ -1,3 +1,5 @@
+const YOKIS_PACKET_SIZE = 64;
+
 /**
  * Wait for a specific delay
  *
@@ -18,18 +20,6 @@ export const trimBuffer = (input: Buffer) => {
     }
 
     return input;
-}
-
-/**
- * Convert hex to string (may be used later, for CRC)
- *
- * @param byteArray
- * @returns
- */
-export const toHexString = (byteArray: any) => {
-    return Array.from(byteArray, function (byte: any) {
-        return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-    }).join('');
 }
 
 /**
@@ -67,4 +57,22 @@ export const getChunkedBuffer = (buffer: Buffer, chunkSize: number) => {
         }
         return Buffer.from(chunk);
     });
+}
+
+/**
+ * Calculate the footer value (like a crc) for the buffer
+ * @param input
+ * @returns number
+ */
+export const crcCalculation = (input: Buffer) => {
+    const buffer = Buffer.alloc((input.length < 64 ? YOKIS_PACKET_SIZE : input.length));
+    // Remove first byte
+    input.copy(buffer, 0, 1, input.length);
+
+    let chk = 0;
+    for (let i = 0; i < buffer.length - 1; i++) {
+        chk = (chk ^ (buffer[i] & 255));
+    }
+
+    return chk;
 }

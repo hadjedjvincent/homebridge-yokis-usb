@@ -10,6 +10,7 @@ import { trimBuffer } from './utils';
 import { getChunkedBuffer } from './utils';
 import { canBeParsedAsJSON } from './utils';
 import { Logger } from 'homebridge';
+import { crcCalculation } from './utils';
 
 const TIMEOUT = 500;
 const YOKIS_VENDOR_ID = 0x1072;
@@ -111,11 +112,9 @@ export class Yokis {
      * Build Buffer for specific command (17 bytes)
      * @param xmlPath (command.xml, server.xml...)
      * @param queryArgs
-     * @param crcValue CRC value
-     * @todo calculate crcValue, algorithm to be found
      * @returns Buffer
      */
-    buildCommand(xmlPath: string, queryString = '', crcControlValue: number) {
+    buildCommand(xmlPath: string, queryString = '') {
         const queryArgs = new URLSearchParams(queryString);
 
         // 7 bytes, depending on the command name
@@ -133,11 +132,13 @@ export class Yokis {
             }
         } else if (xmlPath == 'server.xml') {
             bufferHeader = [0x2a, 0x55, 0x10, 0x07, 0x2a];
+        } else if (xmlPath == 'info.xml') {
+            bufferHeader = [0x19, 0x55, 0x10, 0x07, 0x19];
         } else {
             throw new Error('Unknown xmlPath into buildCommand: ' + xmlPath);
         }
 
-        return Buffer.concat([
+        const bufferToSend = Buffer.concat([
             // Header (7 bytes)
             Buffer.concat([Buffer.from(bufferHeader)], 7),
             // Command name (13 bytes)
@@ -146,8 +147,12 @@ export class Yokis {
             Buffer.from([0x1, 0x0, 0x1, 0x0]),
             // Query string
             Buffer.from(queryString),
+        ]);
+
+        return Buffer.concat([
+            bufferToSend,
             // Separator + CRC
-            Buffer.from([0x0, crcControlValue]),
+            Buffer.from([0x0, crcCalculation(bufferToSend)]),
         ], packetSize);
     }
 
@@ -222,7 +227,7 @@ export class Yokis {
     async unlockKey() {
         const result = await this.lock.acquire('yokis-usb', async () => {
             // Send the command
-            let bufferData = this.buildCommand('server.xml', 'unlockcode=0xB001', 0x21);
+            let bufferData = this.buildCommand('server.xml', 'unlockcode=0xB001');
             await this.commandTransfer(bufferData);
 
             // Wait 100ms
@@ -330,12 +335,11 @@ export class Yokis {
     /**
      *
      * @param moduleId
-     * @param footerCrc
      * @returns json
      */
-    async toggleLight(moduleId: string, footerCrc: any) {
+    async toggleLight(moduleId: string) {
         // Send the command
-        const bufferData = this.buildCommand('command.xml', 'action=order&id=' + moduleId + '&order=default', footerCrc);
+        const bufferData = this.buildCommand('command.xml', 'action=order&id=' + moduleId + '&order=default');
 
         return await this.lock.acquire('yokis-usb', async () => {
             // Wait 20ms
@@ -357,7 +361,7 @@ export class Yokis {
             await delay(100);
 
             // Retrieve JSON answer
-            const json = this.getJSONResponse();
+            const json = await this.getJSONResponse();
 
             // Wait 50ms
             await delay(50);
@@ -370,12 +374,11 @@ export class Yokis {
      * Toggle light ON
      *
      * @param moduleId
-     * @param footerCrc
      * @returns json
      */
-    async toggleOn(moduleId: string, footerCrc: any) {
+    async toggleOn(moduleId: string) {
         // Send the command
-        const bufferData = this.buildCommand('command.xml', 'action=order&id=' + moduleId + '&order=on', footerCrc);
+        const bufferData = this.buildCommand('command.xml', 'action=order&id=' + moduleId + '&order=on');
 
         return await this.lock.acquire('yokis-usb', async () => {
             // Wait 20ms
@@ -397,7 +400,7 @@ export class Yokis {
             await delay(100);
 
             // Retrieve JSON answer
-            const json = this.getJSONResponse();
+            const json = await this.getJSONResponse();
 
             // Wait 50ms
             await delay(50);
@@ -410,12 +413,11 @@ export class Yokis {
      * Toggle light OFF
      *
      * @param moduleId
-     * @param footerCrc
      * @returns json
      */
-    async toggleOff(moduleId: string, footerCrc: any) {
+    async toggleOff(moduleId: string) {
         // Send the command
-        const bufferData = this.buildCommand('command.xml', 'action=order&id=' + moduleId + '&order=off', footerCrc);
+        const bufferData = this.buildCommand('command.xml', 'action=order&id=' + moduleId + '&order=off');
 
         return await this.lock.acquire('yokis-usb', async () => {
             // Wait 20ms
@@ -437,7 +439,7 @@ export class Yokis {
             await delay(100);
 
             // Retrieve JSON answer
-            const json = this.getJSONResponse();
+            const json = await this.getJSONResponse();
 
             // Wait 50ms
             await delay(50);
@@ -450,12 +452,11 @@ export class Yokis {
      * Retrieve module status (state: 0/1 ; var: 0<>100)
      *
      * @param moduleId
-     * @param footerCrc
      * @returns
      */
-    async getModuleStatus(moduleId: string, footerCrc: any) {
+    async getModuleStatus(moduleId: string) {
         // Send the command
-        const bufferData = this.buildCommand('command.xml', 'action=getstatus&id=' + moduleId + '&type=4&correct=1', footerCrc);
+        const bufferData = this.buildCommand('command.xml', 'action=getstatus&id=' + moduleId + '&type=4&correct=1');
         // {"status":"fail","ErrorCode":68} => Unknown ID ?
 
         return await this.lock.acquire('yokis-usb', async () => {
@@ -479,7 +480,7 @@ export class Yokis {
             }
 
             // Retrieve JSON answer
-            const json = this.getJSONResponse();
+            const json = await this.getJSONResponse();
             // Wait 50ms
             await delay(50);
 

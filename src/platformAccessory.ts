@@ -48,7 +48,7 @@ export class YokisAccessory {
 
     async updateAccessoryState() {
         try {
-            const moduleStatus = await this.platform.yokisDriver.getModuleStatus(this.accessory.context.device.moduleId, this.accessory.context.device.crc.getModuleStatus);
+            const moduleStatus = await this.platform.yokisDriver.getModuleStatus(this.accessory.context.device.moduleId);
             this.platform.log.debug('[updateAccessoryState] State for module ' + this.accessory.context.device.moduleId + ' : ', moduleStatus);
 
             if (moduleStatus === null) {
@@ -77,10 +77,10 @@ export class YokisAccessory {
      */
     async setOn(value: CharacteristicValue) {
         if (value == true) {
-            const toggleResult = await this.platform.yokisDriver.toggleOn(this.accessory.context.device.moduleId, this.accessory.context.device.crc.toggleOn);
+            const toggleResult = await this.platform.yokisDriver.toggleOn(this.accessory.context.device.moduleId);
             this.platform.log.debug('[setOn] setOn -> toggleOn', toggleResult);
         } else {
-            const toggleResult = await this.platform.yokisDriver.toggleOff(this.accessory.context.device.moduleId, this.accessory.context.device.crc.toggleOff);
+            const toggleResult = await this.platform.yokisDriver.toggleOff(this.accessory.context.device.moduleId);
             this.platform.log.debug('[setOn] setOn -> toggleOff', toggleResult);
         }
     }
@@ -100,7 +100,7 @@ export class YokisAccessory {
      */
     async getOn(): Promise<CharacteristicValue> {
         try {
-            const moduleStatus = await this.platform.yokisDriver.getModuleStatus(this.accessory.context.device.moduleId, this.accessory.context.device.crc.getModuleStatus);
+            const moduleStatus = await this.platform.yokisDriver.getModuleStatus(this.accessory.context.device.moduleId);
             this.platform.log.debug('[getOn] State for module ' + this.accessory.context.device.moduleId + ' : ', moduleStatus);
 
             if (moduleStatus !== null && moduleStatus.data.state == 0) {
