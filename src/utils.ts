@@ -12,7 +12,7 @@ export const delay = (ms: number) => new Promise<void>(resolve => setTimeout(res
  * Trim the ending zero from a Buffer object
  *
  * @param input Buffer to trim
- * @returns
+ * @returns Buffer
  */
 export const trimBuffer = (input: Buffer) => {
     while (input.lastIndexOf(Buffer.from([0x0])) != -1 && input.lastIndexOf(Buffer.from([0x0])) > 0) {
@@ -26,7 +26,7 @@ export const trimBuffer = (input: Buffer) => {
  * Check if a string can be parsed to JSON, used to check when buffer is full with a valid JSON object
  *
  * @param jsonResult
- * @returns
+ * @returns bool
  */
 export const canBeParsedAsJSON = (jsonResult: string) => {
     let parseResult = false;
@@ -45,7 +45,7 @@ export const canBeParsedAsJSON = (jsonResult: string) => {
  *
  * @param buffer
  * @param chunkSize
- * @returns
+ * @returns Buffer[]
  */
 export const getChunkedBuffer = (buffer: Buffer, chunkSize: number) => {
     const regexChunk = new RegExp(`.{1,${chunkSize}}`, 'g');

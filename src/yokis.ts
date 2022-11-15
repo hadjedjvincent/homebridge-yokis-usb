@@ -44,6 +44,10 @@ export class Yokis {
     interruptEp: InEndpoint;
     hasDetachedKernelDriver = false;
 
+    /**
+     * Constructor
+     * @returns void
+     */
     constructor(log: Logger) {
         this.log = log;
         this.lock = new AsyncLock();
@@ -73,6 +77,10 @@ export class Yokis {
         this.interruptEp = <InEndpoint>this.interface.endpoints.find(e => e.address === YOKIS_INTERRUPT_ENDPOINT);
     }
 
+    /**
+     * Init & unlock (if needed) Yokis key
+     * @returns object
+     */
     async init() {
         this.log.info('Try to retrieve Yokis USB key firmware & unlock');
         let firmwareInfos;
@@ -335,7 +343,7 @@ export class Yokis {
     /**
      *
      * @param moduleId
-     * @returns json
+     * @returns object
      */
     async toggleLight(moduleId: string) {
         // Send the command
@@ -374,7 +382,7 @@ export class Yokis {
      * Toggle light ON
      *
      * @param moduleId
-     * @returns json
+     * @returns object
      */
     async toggleOn(moduleId: string) {
         // Send the command
@@ -413,7 +421,7 @@ export class Yokis {
      * Toggle light OFF
      *
      * @param moduleId
-     * @returns json
+     * @returns object
      */
     async toggleOff(moduleId: string) {
         // Send the command
@@ -452,7 +460,7 @@ export class Yokis {
      * Retrieve module status (state: 0/1 ; var: 0<>100)
      *
      * @param moduleId
-     * @returns
+     * @returns object
      */
     async getModuleStatus(moduleId: string) {
         // Send the command
