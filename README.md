@@ -19,9 +19,9 @@ What is currently working :
  - [x] Toggle state for a module
  - [x] Force ON mode for a module using its ID
  - [x] Force OFF mode for amodule using its ID
+ - [x] Automatically calculate the CRC control value for each request OR loop over 0-128 values in order to find and cache the correct value
 
 By doing some USB traffic capture, I was able to create this plugin, but some additionnal work has to be done **(help needed !**) :
 
- - [x] Automatically calculate the CRC control value for each request OR loop over 0-128 values in order to find and cache the correct value
  - [ ] Retrieve the modules list from the dongle database / or from the Yokis API
  - [ ] Make this plugin compatible with "Energeasy Connect USB Dongle" (I don't have one)
