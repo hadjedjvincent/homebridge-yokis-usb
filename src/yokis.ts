@@ -223,7 +223,7 @@ export class Yokis {
             const versionRegex = /.*fV([0-9]{4})([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*/;
             const found = version.match(versionRegex);
             if (!found) {
-                throw new Error('Unable to parse response for getVersion: ' + version);
+                throw new Error('Unable to parse response for getVersion: ' + JSON.stringify(version));
             }
 
             const firmwareVersion = parseInt(found[1]);
@@ -349,7 +349,8 @@ export class Yokis {
             return JSON.parse(jsonResult);
         }
 
-        this.log.error('Unable to parse JSON: ', jsonResult);
+        this.log.error('Unable to parse JSON: %s', JSON.stringify(jsonResult));
+
         return null;
     }
 
