@@ -39,11 +39,11 @@ export class YokisAccessory {
             .onGet(this.getOn.bind(this));
 
         /**
-         * Updating characteristics values asynchronously every 45s-30s
+         * Updating characteristics values asynchronously every 60s-30s
          */
         setInterval(() => {
             this.updateAccessoryState();
-        }, Math.floor(Math.random() * (45000 - 30000)) + 30000);
+        }, Math.floor(Math.random() * (60000 - 30000)) + 30000);
     }
 
     /**
@@ -76,12 +76,7 @@ export class YokisAccessory {
 
             this.service.updateCharacteristic(this.platform.Characteristic.On, moduleStatus);
         } catch (error: any) {
-            if (error instanceof this.platform.api.hap.HapStatusError) {
-                throw error;
-            }
-
             this.platform.log.error('[updateAccessoryState] Error on getModuleStatus response:', error);
-            throw new this.platform.api.hap.HapStatusError(HAPStatus.SERVICE_COMMUNICATION_FAILURE);
         }
     }
 
