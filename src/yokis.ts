@@ -111,6 +111,11 @@ export class Yokis {
             }
         }
 
+        // Check firmware version
+        if (typeof (firmwareInfos) == 'undefined' || typeof (firmwareInfos.firmwareVersion) == 'undefined') {
+            throw new Error('Unable to retrieve Yokis firmware version');
+        }
+
         this.log.info('Firmware: ', firmwareInfos);
         if (firmwareInfos && firmwareInfos.firmwareVersion >= 1255) {
             this.log.debug('Dongle needs to be unlocked');
