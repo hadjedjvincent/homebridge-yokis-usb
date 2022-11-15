@@ -58,8 +58,21 @@ export class YokisHomebridgePlugin implements DynamicPlatformPlugin {
      * must not be registered again to prevent "duplicate UUID" errors.
      */
     async discoverDevices() {
+        // Lookup and open USB device
+        try {
+            await this.yokisDriver.initUsbDevice();
+        } catch (error: any) {
+            this.log.error('Unable to init USB device', error);
+            return;
+        }
+
         // Init USB key (unlock if needed)
-        await this.yokisDriver.init();
+        try {
+            await this.yokisDriver.init();
+        } catch (error: any) {
+            this.log.error('Unable to initialize Yokis USB dongle', error);
+            return;
+        }
 
         this.log.debug('Config:', JSON.stringify(this.config));
 

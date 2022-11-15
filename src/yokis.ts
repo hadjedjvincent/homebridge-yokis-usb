@@ -35,13 +35,13 @@ export class Yokis {
     // Lock
     lock: AsyncLock;
     // USB Device
-    device: Device | undefined;
+    device!: Device | undefined;
     // USB Interface
-    interface: Interface;
+    interface!: Interface;
     // USB Endpoint
-    commandEp: OutEndpoint;
+    commandEp!: OutEndpoint;
     // USB Endpoint
-    interruptEp: InEndpoint;
+    interruptEp!: InEndpoint;
     hasDetachedKernelDriver = false;
 
     /**
@@ -51,11 +51,19 @@ export class Yokis {
     constructor(log: Logger) {
         this.log = log;
         this.lock = new AsyncLock();
+    }
+
+    /**
+     * Lookup and open USB device
+     * @returns void
+     */
+    async initUsbDevice() {
+        this.log.debug('Try to find USB device => ' + YOKIS_VENDOR_ID + ':' + YOKIS_PRODUCT_ID);
         this.device = usb.findByIds(YOKIS_VENDOR_ID, YOKIS_PRODUCT_ID);
         if (!this.device) {
-            throw new Error('Unable to find Yokis USB/Yokey')
+            throw new Error('Unable to find Yokis USB/Yokey');
         }
-        this.log.debug('Opening USB Device ' + YOKIS_VENDOR_ID + ':' + YOKIS_PRODUCT_ID);
+        this.log.debug('Trying to open USB device');
         this.device.open();
 
         this.interface = this.device.interface(0);
