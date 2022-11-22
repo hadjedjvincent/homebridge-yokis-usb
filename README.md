@@ -5,8 +5,11 @@
 </p>
 
 # Homebridge Yokis Plugin
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+<a href="https://www.npmjs.com/package/homebridge-yokis-usb"><img title="npm version" src="https://badgen.net/npm/v/homebridge-yokis-usb?icon=npm&label"></a>
+<a href="https://www.npmjs.com/package/homebridge-yokis-usb"><img title="npm downloads" src="https://badgen.net/npm/dt/homebridge-yokis-usb?label=downloads"></a>
 
-This plugin allow you to trigger ON/OFF and get current state of Yokis *MTR2000ER* module.
+This plugin allow you to trigger ON/OFF and get current state of Yokis *MTR2000ER* module from HomeKit with [Homebridge](https://homebridge.io).
 The implementation has been made using the [Yokey](https://www.yokis.com/en/system-configuration-and-management/yokey/), an USB dongle that facilitates acquisition and configuration phase of Yokis radio modules.
 
 Using the [Yokis Pro app](https://www.yokis.com/en/app-yokispro/), you can create Yokis Radio BUS, configure your module etc.
@@ -19,7 +22,7 @@ What is currently working :
  - [x] Toggle state for a module
  - [x] Force ON mode for a module using its ID
  - [x] Force OFF mode for amodule using its ID
- - [x] Automatically calculate the CRC control value for each request OR loop over 0-128 values in order to find and cache the correct value
+ - [x] Automatically calculate the CRC control value for each request
 
 By doing some USB traffic capture, I was able to create this plugin, but some additionnal work has to be done **(help needed !**) :
 
