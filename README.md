@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/homebridge/branding/raw/master/logos/homebridge-wordmark-logo-vertical.png" height="100">
+<img src="https://raw.githubusercontent.com/homebridge/branding/latest/logos/homebridge-wordmark-logo-vertical.png" height="100">
 <img src="https://www.yokis.com/wp-content/themes/yokis/images/yokis.svg" height="100">
 <img src="https://www.yokis.com/wp-content/uploads/2017/06/yokey.png" height="100">
 </p>
