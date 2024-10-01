@@ -34,7 +34,7 @@
     "usb": "^2.5.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
+    "@types/node": "^22.7.4",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.0.2",
     "eslint": "^8.0.1",
